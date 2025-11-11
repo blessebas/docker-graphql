@@ -26,6 +26,18 @@ jobs:
         echo 'Logging in to Docker Hub...'
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         echo 'Docker login successful'
+
+    - name: Build docker image
+      run: |
+        echo 'Building Docker image...'
+        docker build -t seysww/docker-graphql:0.0.2 .
+        echo 'Docker image built successfully'
+
+    - name: Push docker image
+      run: |
+        echo 'Pushing Docker image...'
+        docker push seysww/docker-graphql:0.0.2
+        echo 'Docker image pushed successfully'
         
 
     
