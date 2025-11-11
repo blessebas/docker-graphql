@@ -31,12 +31,14 @@ jobs:
       run: |
         echo 'Building Docker image...'
         docker build -t seysww/docker-graphql:0.0.2 .
+        docker build -t seysww/docker-graphql:latest .
         echo 'Docker image built successfully'
 
     - name: Push docker image
       run: |
         echo 'Pushing Docker image...'
         docker push seysww/docker-graphql:0.0.2
+        docker push seysww/docker-graphql:latest
         echo 'Docker image pushed successfully'
         
 
