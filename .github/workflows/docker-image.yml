@@ -18,28 +18,40 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Git semantic version
+      id: semver
+      uses: paulhatch/semantic-version@v5.3.0
+      with:
+        major_pattern: '^(breaking|major)'
+        minor_pattern: '^(feature|minor)'
+        patch_pattern: '^(fix|patch)'
+        version_format: "${major}.${minor}.${patch}-prerelease${increment}"
+
+
     - name: Docker login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        NEW_VERSION: ${{ steps.semver.outputs.version }}
       run: |
         echo 'Logging in to Docker Hub...'
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         echo 'Docker login successful'
+        echo "New version: $NEW_VERSION!!!!!!!"
 
-    - name: Build docker image
-      run: |
-        echo 'Building Docker image...'
-        docker build -t seysww/docker-graphql:0.0.2 .
-        docker build -t seysww/docker-graphql:latest .
-        echo 'Docker image built successfully'
+    # - name: Build docker image
+    #   run: |
+    #     echo 'Building Docker image...'
+    #     docker build -t seysww/docker-graphql:0.0.2 .
+    #     docker build -t seysww/docker-graphql:latest .
+    #     echo 'Docker image built successfully'
 
-    - name: Push docker image
-      run: |
-        echo 'Pushing Docker image...'
-        docker push seysww/docker-graphql:0.0.2
-        docker push seysww/docker-graphql:latest
-        echo 'Docker image pushed successfully'
+    # - name: Push docker image
+    #   run: |
+    #     echo 'Pushing Docker image...'
+    #     docker push seysww/docker-graphql:0.0.2
+    #     docker push seysww/docker-graphql:latest
+    #     echo 'Docker image pushed successfully'
         
 
     
